@@ -8,6 +8,7 @@ import (
 	"flag"
 	"io/ioutil"
 
+	"fmt"
 	"image"
 	"image/draw"
 	"image/png"
@@ -70,8 +71,20 @@ func main() {
 		img3 = imaging.FlipH(img3)
 	}
 
-	rect := image.Rect(0, 0, img1.Bounds().Dx()*ncolumns, img1.Bounds().Dy()+img2.Bounds().Dy()*nlong+img3.Bounds().Dy())
+	width := int(float64(img1.Bounds().Dx()*(ncolumns-1))*rinterval) + img1.Bounds().Dx()
+	//width := img1.Bounds().Dx()*ncolumns
+	rect := image.Rect(0, 0, width, img1.Bounds().Dy()+img2.Bounds().Dy()*nlong+img3.Bounds().Dy())
 	canvas := image.NewRGBA(rect)
+
+	// % go run main.go -o ../omg00.png
+	// (0,0)-(150,241)
+	//
+	// % go run main.go -l 20 -n 5 -o ../omg01.png
+	// (0,0)-(3000,401)
+	//
+	// % go run main.go -i 0.2 -l 20 -n 5 -o ../omg02.png
+	// (0,0)-(3000,401)  -> O.M.G.
+	fmt.Println(canvas.Bounds())
 
 	for col := 0; col < ncolumns; col++ {
 		x := int(float64(img1.Bounds().Dx()*col) * rinterval)
